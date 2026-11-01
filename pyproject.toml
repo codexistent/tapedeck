@@ -1,0 +1,31 @@
+[project]
+name = "tapedeck"
+version = "0.1.0"
+description = "Counterfactual replay and evaluation framework for AI agents."
+readme = "README.md"
+authors = [
+    { name = "Pearl Yu", email = "particularpearl@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "openai",
+    "scipy",
+    "jinja2",
+    "typer",
+    "pyyaml",
+    "python-dotenv>=1.2.4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "hypothesis",
+    "pytest-socket",
+    "ruff",
+    "mypy"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
