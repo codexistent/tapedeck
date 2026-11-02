@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tapedeck report</title>
+<style>
+  :root {
+    --bg: #fbfaf8; --panel: #ffffff; --ink: #1c1b19; --muted: #6b675f; --rule: #e6e2da;
+    --good: #2f7d4f; --good-tint: #e6f2ea; --bad: #b3372d; --bad-tint: #f8e7e5;
+    --accent: #2c5fa8; --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151413; --panel: #1d1c1a; --ink: #ecebe7; --muted: #a29e95; --rule: #34322e;
+      --good: #6cc28f; --good-tint: #1f2f25; --bad: #ef8a80; --bad-tint: #3a2320; --accent: #8db4ee;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h2 { font-size: 17px; margin: 36px 0 12px; }
+  .meta { color: var(--muted); font-size: 13px; }
+  .banner { border-radius: 10px; padding: 18px 20px; margin: 20px 0 8px; border: 1px solid; }
+  .banner.pass { background: var(--good-tint); border-color: var(--good); }
+  .banner.fail { background: var(--bad-tint); border-color: var(--bad); }
+  .banner strong { font-size: 18px; }
+  .explain { margin: 10px 0 0; padding-left: 18px; }
+  .explain li { margin: 4px 0; }
+  table { width: 100%; border-collapse: collapse; background: var(--panel);
+          border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule);
+           font-size: 14px; vertical-align: middle; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase;
+       letter-spacing: .04em; }
+  tr:last-child td { border-bottom: 0; }
+  tr.regressed td { background: var(--bad-tint); }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  code { font-family: var(--mono); font-size: 13px; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 12px;
+          font-weight: 600; }
+  .pill.ok { background: var(--good-tint); color: var(--good); }
+  .pill.bad { background: var(--bad-tint); color: var(--bad); }
+  .bar { position: relative; width: 140px; height: 14px; background: var(--rule);
+         border-radius: 7px; }
+  .bar .ci { position: absolute; top: 3px; height: 8px; border-radius: 4px; background: var(--accent);
+             opacity: .55; }
+  .bar .base { position: absolute; top: -2px; width: 2px; height: 18px; background: var(--ink); }
+  .legend { color: var(--muted); font-size: 12px; margin-top: 8px; }
+  details.case { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px;
+                 margin: 10px 0; padding: 0 14px; }
+  details.case > summary { cursor: pointer; padding: 12px 0; font-weight: 600; }
+  details.run { border-top: 1px solid var(--rule); padding: 8px 0; }
+  details.run > summary { cursor: pointer; font-size: 14px; }
+  .sig { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  ul.checks { margin: 8px 0; padding-left: 18px; font-size: 13px; }
+  ul.checks .fail { color: var(--bad); }
+  ol.events { margin: 8px 0 4px; padding-left: 22px; font-size: 13px; }
+  ol.events li { margin: 3px 0; }
+  .ev-tool { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
+  .muted { color: var(--muted); }
+  .err { color: var(--bad); font-family: var(--mono); font-size: 12px; white-space: pre-wrap; }
+  @media (max-width: 640px) { .bar { width: 80px; } th:nth-child(5), td:nth-child(5) { display: none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Tapedeck report</h1>
+  <div class="meta">
+    {% if report.prompt_label %}Candidate <code>{{ report.prompt_label }}</code> · {% endif %}
+    model <code>{{ report.result.model }}</code> · generated {{ generated }}
+  </div>
+
+  <div class="banner {{ 'pass' if verdict.passed else 'fail' }}">
+    <strong>{{ '✅' if verdict.passed else '❌' }} {{ report.headline }}</strong>
+    {% if verdict.regressed %}
+    <ul class="explain">
+      {% for c in verdict.regressed %}
+      <li><code>{{ c.case }}</code>: {{ report.explanations[c.case] }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  <div class="meta">
+    alpha {{ verdict.alpha }} with Holm correction · minimum effect {{ verdict.min_effect }} ·
+    est. cost ${{ '%.4f' % report.result.cost_usd }}
+    {% if report.result.errors %} · <span style="color:var(--bad)">{{ report.result.errors|length }} crashed run(s)</span>{% endif %}
+  </div>
+
+  <h2>Cases</h2>
+  <table>
+    <thead><tr><th>Case</th><th>Baseline</th><th>Candidate</th><th>Candidate 95% interval</th><th>p (adj.)</th><th>Status</th></tr></thead>
+    <tbody>
+    {% for c in verdict.cases %}
+      {% set lo, hi = c.candidate.interval %}
+      <tr class="{{ 'regressed' if c.regressed else '' }}">
+        <td><code>{{ c.case }}</code></td>
+        <td class="num">{{ c.baseline.passes }}/{{ c.baseline.n }}</td>
+        <td class="num">{{ c.candidate.passes }}/{{ c.candidate.n }}</td>
+        <td>
+          <div class="bar" title="interval {{ '%.2f' % lo }}–{{ '%.2f' % hi }}, baseline rate {{ '%.2f' % c.baseline.rate }}">
+            <div class="ci" style="left: {{ (lo * 100)|round(1) }}%; width: {{ ((hi - lo) * 100)|round(1) }}%"></div>
+            <div class="base" style="left: calc({{ (c.baseline.rate * 100)|round(1) }}% - 1px)"></div>
+          </div>
+        </td>
+        <td class="num">{{ c.p_adjusted|p }}</td>
+        <td>{% if c.regressed %}<span class="pill bad">regressed</span>{% else %}<span class="pill ok">ok</span>{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <div class="legend">Blue band: candidate pass rate, 95% Wilson interval. Black tick: baseline pass rate.</div>
+
+  <h2>Runs</h2>
+  {% for case, runs in report.result.runs.items() %}
+  {% set passed = runs|selectattr('passed')|list|length %}
+  <details class="case" {% if case in report.explanations %}open{% endif %}>
+    <summary><code>{{ case }}</code> <span class="muted">· {{ passed }}/{{ runs|length }} passed</span></summary>
+    {% for run in runs %}
+    <details class="run">
+      <summary>
+        {% if run.passed %}<span class="pill ok">pass</span>{% else %}<span class="pill bad">fail</span>{% endif %}
+        run {{ run.index }} <span class="sig">{{ run.signature|join(' → ') or '(no tool calls)' }}</span>
+      </summary>
+      {% if run.error %}<div class="err">{{ run.error }}</div>{% endif %}
+      <ul class="checks">
+        {% for check in run.checks %}
+        <li class="{{ '' if check.passed else 'fail' }}">{{ '✓' if check.passed else '✗' }} <code>{{ check.name }}</code> <span class="muted">{{ check.reason }}</span></li>
+        {% endfor %}
+      </ul>
+      <ol class="events">
+        {% for ev in run.trajectory.events %}
+          {% if ev.type == 'tool_call' %}
+          <li class="ev-tool">{{ ev.name }}({{ ev.args|tojson }}) → {% if ev.error %}<span class="err">{{ ev.error }}</span>{% else %}{{ ev.result|tojson|truncate(220) }}{% endif %}</li>
+          {% elif ev.type == 'output' %}
+          <li><span class="muted">reply:</span> {{ ev.content }}</li>
+          {% elif ev.type == 'input' %}
+          <li><span class="muted">customer:</span> {{ ev.content }}</li>
+          {% endif %}
+        {% endfor %}
+      </ol>
+    </details>
+    {% endfor %}
+  </details>
+  {% endfor %}
+</main>
+</body>
+</html>

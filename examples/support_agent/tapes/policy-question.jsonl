@@ -1,0 +1,6 @@
+{"case":"policy-question","created_at":"2026-11-02T16:45:06+00:00","extra":{},"model":"scripted/support-v1","prompt_sha":"ea49d46c00bf51ec","tape_version":1,"type":"meta"}
+{"content":"What's your return window?","context":{"customer_id":"C200"},"step":0,"type":"input"}
+{"latency_ms":0,"request_sha":"2509454fad56999728b4ad1deedd1417d76b1c006a2e936f1fdbb43d1ab020ec","response":{"content":null,"finish_reason":"tool_calls","tool_calls":[{"arguments":{"query":"What's your return window?"},"id":"call_1","name":"search_policy"}],"usage":{"input_tokens":175,"output_tokens":40}},"step":1,"type":"llm_call"}
+{"args":{"query":"What's your return window?"},"effect":"read","error":null,"id":"t1","name":"search_policy","result":["damaged: Items that arrive damaged or defective are refunded in full; no return needed."],"step":2,"type":"tool_call"}
+{"latency_ms":0,"request_sha":"4bd537945acf352a2e1ed6eba492ad5566eeabfd68bf09aa4cb6833a50be1b7c","response":{"content":"Items can be returned within 30 days of delivery for a full refund.","finish_reason":"stop","tool_calls":[],"usage":{"input_tokens":260,"output_tokens":40}},"step":3,"type":"llm_call"}
+{"content":"Items can be returned within 30 days of delivery for a full refund.","step":4,"type":"output"}

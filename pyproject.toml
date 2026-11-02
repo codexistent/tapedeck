@@ -1,31 +1,57 @@
 [project]
 name = "tapedeck"
 version = "0.1.0"
-description = "Counterfactual replay and evaluation framework for AI agents."
+description = "Regression tests for AI agents: record real runs, replay changed agents against the recorded world, and gate pull requests with statistics."
 readme = "README.md"
+license = "Apache-2.0"
 authors = [
     { name = "Pearl Yu", email = "particularpearl@gmail.com" }
 ]
 requires-python = ">=3.11"
 dependencies = [
     "pydantic>=2.0",
-    "openai",
-    "scipy",
-    "jinja2",
-    "typer",
-    "pyyaml",
-    "python-dotenv>=1.2.4",
+    "openai>=1.40",
+    "jinja2>=3.1",
+    "typer>=0.12",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
 ]
+
+[project.scripts]
+tapedeck = "tapedeck.cli:app"
 
 [dependency-groups]
 dev = [
-    "pytest",
-    "hypothesis",
-    "pytest-socket",
-    "ruff",
-    "mypy"
+    "pytest>=8",
+    "hypothesis>=6",
+    "pytest-socket>=0.7",
+    "ruff>=0.6",
+    "mypy>=1.10",
+    "types-PyYAML",
 ]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tapedeck"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not live'"
+markers = ["live: calls a real LLM API; excluded by default"]
+pythonpath = ["examples"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["tapedeck"]
+mypy_path = "src"
