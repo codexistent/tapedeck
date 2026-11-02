@@ -55,6 +55,7 @@ runs:
         [ -n "$INPUT_PROMPT" ] && args+=(--prompt "$INPUT_PROMPT")
         [ -n "$INPUT_RUNS" ] && args+=(--runs "$INPUT_RUNS")
         [ -n "$INPUT_BUDGET" ] && args+=(--budget "$INPUT_BUDGET")
+        [ -n "$TAPEDECK_TOKEN" ] && args+=(--upload)
         tapedeck "${args[@]}"
         code=$?
         echo "code=$code" >> "$GITHUB_OUTPUT"

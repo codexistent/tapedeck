@@ -20,6 +20,7 @@ from .runner import (
     save_runs,
 )
 from .stats import false_alarm_rate, power
+from .upload import upload as send_upload
 from .verify import Run
 
 app = typer.Typer(
@@ -131,6 +132,10 @@ def test(
     md: Annotated[Path | None, typer.Option(help="Write a Markdown summary here.")] = None,
     save: Annotated[bool, typer.Option(help="Save every run's trajectory.")] = False,
     quiet: Annotated[bool, typer.Option("--quiet", "-q")] = False,
+    upload: Annotated[
+        bool,
+        typer.Option(help="Send results to the dashboard (needs TAPEDECK_TOKEN)."),
+    ] = False,
 ) -> None:
     """Replay the candidate against the tapes and compare with the baseline.
 
@@ -160,6 +165,12 @@ def test(
             typer.echo(line)
     colour = "green" if report.verdict.passed else "red"
     typer.echo(typer.style(report.headline, fg=colour, bold=True))
+    if upload:
+        sent = send_upload(report)
+        if sent.ok:
+            typer.echo(f"uploaded: {sent.url}")
+        else:
+            typer.echo(f"warning: {sent.message}", err=True)
     raise typer.Exit(code=0 if report.verdict.passed else 1)
 
 
