@@ -16,7 +16,7 @@ from typing import Any
 
 from .report import Report, _first_failing_check
 
-DEFAULT_URL = "https://tapedeck.vercel.app"
+DEFAULT_URL = "https://tapedeck-five.vercel.app"
 
 
 @dataclass
