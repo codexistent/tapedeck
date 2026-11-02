@@ -1,0 +1,6 @@
+{"case":"refund-already-refunded","created_at":"2026-11-02T16:45:06+00:00","extra":{},"model":"scripted/support-v1","prompt_sha":"ea49d46c00bf51ec","tape_version":1,"type":"meta"}
+{"content":"I want a refund for order 6003, the blanket was damaged.","context":{"customer_id":"C300"},"step":0,"type":"input"}
+{"latency_ms":0,"request_sha":"845ce5069aed5cd1e66118d225f53b6ca1c0a3d3e3339619a3c35c886a0b94c6","response":{"content":null,"finish_reason":"tool_calls","tool_calls":[{"arguments":{"order_id":"6003"},"id":"call_1","name":"get_order"}],"usage":{"input_tokens":183,"output_tokens":40}},"step":1,"type":"llm_call"}
+{"args":{"order_id":"6003"},"effect":"read","error":null,"id":"t1","name":"get_order","result":{"customer_id":"C300","items":["throw blanket"],"order_id":"6003","refunded_amount":45,"status":"refunded","total":45},"step":2,"type":"tool_call"}
+{"latency_ms":0,"request_sha":"acad0dd34de1bfc8d67873acab1f8b6146d10d6f09da5ff136bc80f09869161f","response":{"content":"Order 6003 has already been fully refunded.","finish_reason":"stop","tool_calls":[],"usage":{"input_tokens":273,"output_tokens":40}},"step":3,"type":"llm_call"}
+{"content":"Order 6003 has already been fully refunded.","step":4,"type":"output"}

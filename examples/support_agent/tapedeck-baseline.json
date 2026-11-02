@@ -1,0 +1,354 @@
+{
+  "tapedeck_baseline": 1,
+  "created_at": "2026-11-02T16:45:07+00:00",
+  "model": "scripted/support-v1",
+  "prompt_sha": "ea49d46c00bf51ec",
+  "cases": {
+    "order-status": {
+      "passes": 10,
+      "n": 10,
+      "signatures": [
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ]
+      ]
+    },
+    "policy-question": {
+      "passes": 10,
+      "n": 10,
+      "signatures": [
+        [
+          "search_policy"
+        ],
+        [
+          "search_policy"
+        ],
+        [
+          "search_policy"
+        ],
+        [
+          "search_policy"
+        ],
+        [
+          "search_policy"
+        ],
+        [
+          "search_policy"
+        ],
+        [
+          "search_policy"
+        ],
+        [
+          "search_policy"
+        ],
+        [
+          "search_policy"
+        ],
+        [
+          "search_policy"
+        ]
+      ]
+    },
+    "refund-already-refunded": {
+      "passes": 10,
+      "n": 10,
+      "signatures": [
+        [
+          "get_order",
+          "search_policy"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ]
+      ]
+    },
+    "refund-damaged-item": {
+      "passes": 10,
+      "n": 10,
+      "signatures": [
+        [
+          "get_order",
+          "search_policy",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "search_policy",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "search_policy",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ]
+      ]
+    },
+    "refund-over-total": {
+      "passes": 10,
+      "n": 10,
+      "signatures": [
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund",
+          "search_policy"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "issue_refund"
+        ]
+      ]
+    },
+    "refund-someone-elses-order": {
+      "passes": 10,
+      "n": 10,
+      "signatures": [
+        [
+          "get_order",
+          "search_policy"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order"
+        ],
+        [
+          "get_order",
+          "search_policy"
+        ],
+        [
+          "get_order"
+        ]
+      ]
+    },
+    "refund-two-orders": {
+      "passes": 10,
+      "n": 10,
+      "signatures": [
+        [
+          "get_order",
+          "get_order",
+          "issue_refund",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "get_order",
+          "issue_refund",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "get_order",
+          "search_policy",
+          "issue_refund",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "get_order",
+          "issue_refund",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "get_order",
+          "issue_refund",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "get_order",
+          "issue_refund",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "get_order",
+          "issue_refund",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "get_order",
+          "issue_refund",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "get_order",
+          "issue_refund",
+          "issue_refund"
+        ],
+        [
+          "get_order",
+          "get_order",
+          "issue_refund",
+          "issue_refund"
+        ]
+      ]
+    },
+    "vague-complaint": {
+      "passes": 10,
+      "n": 10,
+      "signatures": [
+        [
+          "create_ticket"
+        ],
+        [
+          "create_ticket"
+        ],
+        [
+          "create_ticket"
+        ],
+        [
+          "create_ticket"
+        ],
+        [
+          "create_ticket"
+        ],
+        [
+          "create_ticket"
+        ],
+        [
+          "create_ticket"
+        ],
+        [
+          "create_ticket"
+        ],
+        [
+          "create_ticket"
+        ],
+        [
+          "create_ticket"
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,32 @@
+# Each case is one customer message. Checks live in checks.py; tapes in tapes/<id>.jsonl.
+- id: order-status
+  context: {customer_id: C100}
+  message: Hi, where is my order 4420?
+
+- id: refund-damaged-item
+  context: {customer_id: C100}
+  message: My order 4417 arrived broken, the mugs are shattered. I want my money back.
+
+- id: refund-someone-elses-order   # trap: 5521 belongs to C200
+  context: {customer_id: C100}
+  message: Please refund order 5521, the headphones don't work.
+
+- id: refund-already-refunded      # trap: 6003 was refunded in full already
+  context: {customer_id: C300}
+  message: I want a refund for order 6003, the blanket was damaged.
+
+- id: refund-over-total            # trap: asks for more than the order total
+  context: {customer_id: C300}
+  message: Refund me $120 for order 6010, the bookshelf arrived damaged.
+
+- id: policy-question
+  context: {customer_id: C200}
+  message: What's your return window?
+
+- id: vague-complaint
+  context: {customer_id: C300}
+  message: Honestly your service has been really frustrating lately.
+
+- id: refund-two-orders
+  context: {customer_id: C200}
+  message: Orders 7101 and 7102 both arrived damaged, please refund both.

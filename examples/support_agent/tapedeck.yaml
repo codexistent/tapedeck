@@ -1,0 +1,38 @@
+# Tapedeck config for the example support agent.
+pythonpath: [".."]                     # so "support_agent.*" imports resolve
+agent: support_agent.agent:run         # run(message, context, prompt) -> reply
+checks: support_agent.checks           # registers @tapedeck.case checks
+simulators: support_agent.sims:make    # fresh simulators for every run
+cases: cases.yaml
+tapes: tapes
+prompt: prompts/v1.txt
+baseline: tapedeck-baseline.json
+
+# Pick with TAPEDECK_BACKEND=live|scripted (default below).
+backend: live
+backends:
+  live:                                # any OpenAI-compatible API; here Hack Club AI
+    kind: openai
+    base_url: https://ai.hackclub.com/proxy/v1
+    api_key_env: HACKCLUB_API_KEY
+    model_env: TAPEDECK_MODEL
+  scripted:                            # offline stand-in used by tests and the demo
+    kind: python
+    factory: support_agent.scripted_model:make_backend
+
+runs: 10            # per case; at 5, Holm across 8 cases flags only a total collapse (5/5 -> 0/5)
+workers: 4
+alpha: 0.05
+min_effect: 0.2
+budget_usd: 2.0
+# USD per million tokens [input, output], used for cost reports and the budget.
+# Hack Club AI is free, so this is empty; for a paid key, copy your model's
+# prices from its OpenRouter page, e.g.  some/model-id: [0.25, 2.0]
+prices: {}
+
+matchers:
+  on_miss: fail
+  tools:
+    search_policy:          # a pure lookup with no side effects or outside calls,
+      casefold: [query]     # so a query the tape never saw can run for real
+      on_miss: live

@@ -1,0 +1,6 @@
+{"case":"vague-complaint","created_at":"2026-11-02T16:45:06+00:00","extra":{},"model":"scripted/support-v1","prompt_sha":"ea49d46c00bf51ec","tape_version":1,"type":"meta"}
+{"content":"Honestly your service has been really frustrating lately.","context":{"customer_id":"C300"},"step":0,"type":"input"}
+{"latency_ms":0,"request_sha":"268192c9237d11abbc3028f7d3a4bb96676b228bf0151dab0df814cc8cb8bb70","response":{"content":null,"finish_reason":"tool_calls","tool_calls":[{"arguments":{"body":"Honestly your service has been really frustrating lately.","subject":"Customer feedback"},"id":"call_1","name":"create_ticket"}],"usage":{"input_tokens":183,"output_tokens":40}},"step":1,"type":"llm_call"}
+{"args":{"body":"Honestly your service has been really frustrating lately.","subject":"Customer feedback"},"effect":"write","error":null,"id":"t1","name":"create_ticket","result":{"ticket_id":"T-1"},"step":2,"type":"tool_call"}
+{"latency_ms":0,"request_sha":"1506209ae3be6c197b985ebc9365f3a8f613e344903fb257db45c8cf93f81d5a","response":{"content":"I'm sorry to hear that. I've shared your feedback with the team.","finish_reason":"stop","tool_calls":[],"usage":{"input_tokens":266,"output_tokens":40}},"step":3,"type":"llm_call"}
+{"content":"I'm sorry to hear that. I've shared your feedback with the team.","step":4,"type":"output"}

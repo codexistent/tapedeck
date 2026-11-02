@@ -1,0 +1,25 @@
+# Dogfooding: run Tapedeck on the example agent whenever its prompt, code or tapes change.
+# Uses the offline scripted model, so it needs no secrets and works on fork PRs.
+# To gate a real agent, see "Use it in CI" in the README.
+name: Tapedeck (example agent)
+
+on:
+  pull_request:
+    paths:
+      - "examples/support_agent/**"
+      - "src/tapedeck/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  tapedeck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        env:
+          TAPEDECK_BACKEND: scripted
+        with:
+          config: examples/support_agent/tapedeck.yaml
