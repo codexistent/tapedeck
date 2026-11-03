@@ -60,7 +60,7 @@ export default async function Settings({
       </section>
 
       <section className="card stack">
-        <h2>Connect CI</h2>
+        <div className="spread"><h2>Connect CI</h2><Link href="/docs#token">Full step-by-step guide →</Link></div>
         <p className="muted small">
           Save the token as a repository secret named <code>TAPEDECK_TOKEN</code> (GitHub repo → Settings →
           Secrets and variables → Actions). Your agent&apos;s own model key goes in as a secret too: replays run

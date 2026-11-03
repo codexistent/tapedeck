@@ -18,6 +18,8 @@ with {'order_id': '5521', 'amount': 129, 'reason': 'arrived damaged'}
 
 That is real output from the example agent in this repo (run with its offline scripted model) after deleting one line from its system prompt (the rule to check that an order belongs to the customer). Rewording the greeting instead passes cleanly.
 
+**Setting it up on your own agent?** Follow the step-by-step guide: https://tapedeck-five.vercel.app/docs
+
 ## Why not plain record/replay?
 
 Several tools record an agent's tool calls and replay them in CI. That tests your plumbing, but replaying the *old* trajectory can't tell you whether a *new* prompt changes behavior. Tapedeck's replay is **counterfactual**: the model is live, so the changed agent makes its own decisions, while tools are served from the tape. When the agent does something the recording never saw, such as refunding a different amount or calling tools in a new order, **simulators** keep the world consistent: a refund at step 3 still shows up in `get_order` at step 5. Because the model is nondeterministic, every case runs N times, and a **statistical gate** decides whether a drop is real.

@@ -157,3 +157,31 @@ footer.site { border-top: 1px solid var(--rule); padding: 24px 0 40px; color: va
   .hide-sm { display: none; }
   th, td { padding: 9px 10px; }
 }
+
+/* docs */
+.docs { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px; padding: 32px 0 80px; }
+.docs nav.toc { position: sticky; top: 24px; align-self: start; font-size: 14px; }
+.docs nav.toc a { display: block; padding: 4px 0; color: var(--muted); }
+.docs nav.toc a:hover { color: var(--ink); text-decoration: none; }
+.docs nav.toc .toc-title { font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.docs article { max-width: 760px; }
+.docs article > * + * { margin-top: 14px; }
+.docs h1 { font-size: 32px; }
+.docs h2 { font-size: 21px; margin-top: 44px; padding-top: 8px; scroll-margin-top: 16px; }
+.docs h3 { font-size: 16px; margin-top: 24px; }
+.docs ol.steps { padding-left: 22px; }
+.docs ol.steps > li + li { margin-top: 8px; }
+.docs .step-label { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 700; letter-spacing: 0.04em; }
+.docs .where { font-size: 13px; color: var(--muted); }
+.docs kbd { font-family: var(--sans); font-size: 13px; background: var(--panel); border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; }
+.codewrap { position: relative; }
+.codewrap .file { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.copy-btn { position: absolute; top: 8px; right: 8px; font: inherit; font-size: 12px; cursor: pointer;
+  background: var(--panel); color: var(--muted); border: 1px solid var(--rule); border-radius: 6px; padding: 2px 8px; }
+.codewrap .file + pre + .copy-btn, .codewrap .file ~ .copy-btn { top: 28px; }
+.callout { border-left: 3px solid var(--accent); background: var(--accent-tint); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 14px; }
+.callout.warn { border-color: var(--warn); background: var(--warn-tint); }
+@media (max-width: 860px) {
+  .docs { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .docs nav.toc { position: static; border: 1px solid var(--rule); border-radius: var(--radius); padding: 12px 14px; background: var(--panel); }
+}

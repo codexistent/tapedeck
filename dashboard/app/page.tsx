@@ -19,6 +19,7 @@ export default async function Landing() {
           <nav className="tabs" aria-label="Site">
             <a href="#how">How it works</a>
             <a href="#pricing">Pricing</a>
+            <Link href="/docs">Docs</Link>
             <a href="https://github.com/codexistent/tapedeck">GitHub</a>
           </nav>
           <Link className="btn" href={cta.href}>{session ? "Dashboard" : "Sign in"}</Link>
@@ -34,7 +35,7 @@ export default async function Landing() {
           </p>
           <div className="row">
             <Link className="btn primary" href={cta.href}>{cta.label}</Link>
-            <a className="btn" href="https://github.com/codexistent/tapedeck#quickstart-2-minutes-offline">Try the CLI</a>
+            <Link className="btn" href="/docs">Setup guide</Link>
           </div>
 
           <div className="comment" aria-label="Example pull request comment">
