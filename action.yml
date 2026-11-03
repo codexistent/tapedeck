@@ -24,6 +24,9 @@ inputs:
   python-version:
     description: Python version to run with.
     default: "3.12"
+  install:
+    description: Command that installs your agent's own dependencies, e.g. "pip install -r requirements.txt". Runs in the same Python as Tapedeck.
+    default: ""
 
 outputs:
   passed:
@@ -40,6 +43,13 @@ runs:
     - name: Install Tapedeck
       shell: bash
       run: python -m pip install --quiet "${{ github.action_path }}"
+
+    - name: Install agent dependencies
+      if: inputs.install != ''
+      shell: bash
+      env:
+        INSTALL: ${{ inputs.install }}
+      run: bash -c "$INSTALL"
 
     - name: Run Tapedeck
       id: test

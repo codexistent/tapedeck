@@ -6,7 +6,9 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
+import yaml
 from dotenv import find_dotenv, load_dotenv
+from pydantic import ValidationError
 
 from .config import CaseSpec, Config
 from .errors import BudgetExceeded
@@ -26,6 +28,7 @@ from .verify import Run
 app = typer.Typer(
     add_completion=False,
     no_args_is_help=True,
+    pretty_exceptions_enable=False,
     help="Regression tests for AI agents: record, replay, and gate changes with statistics.",
 )
 
@@ -193,5 +196,31 @@ def power_table(
         typer.echo(f"{n:>4} {fa:>13.3f} {p5:>13.3f} {p2:>13.3f}")
 
 
+def _hint(exc: BaseException) -> str:
+    if isinstance(exc, ModuleNotFoundError):
+        return (
+            f"could not import {exc.name!r}: check the agent/checks/simulators paths in "
+            "tapedeck.yaml (module:function, relative to the folder tapedeck.yaml is in)"
+        )
+    if isinstance(exc, FileNotFoundError):
+        return f"file not found: {exc.filename or exc} (paths are relative to tapedeck.yaml)"
+    if isinstance(exc, yaml.YAMLError):
+        return f"tapedeck.yaml is not valid YAML: {exc}".replace("\n", " ")
+    if isinstance(exc, ValidationError):
+        first = exc.errors()[0]
+        where = ".".join(str(p) for p in first["loc"]) or "(top level)"
+        return f"tapedeck.yaml: {where}: {first['msg']}"
+    return str(exc)
+
+
+def main() -> None:
+    """Console entry point: setup mistakes print one line instead of a traceback."""
+    try:
+        app()
+    except (ValueError, RuntimeError, OSError, ImportError, yaml.YAMLError) as exc:
+        typer.echo(typer.style("error: ", fg="red", bold=True) + _hint(exc), err=True)
+        raise SystemExit(2) from None
+
+
 if __name__ == "__main__":
-    app()
+    main()

@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.scripts]
-tapedeck = "tapedeck.cli:app"
+tapedeck = "tapedeck.cli:main"
 
 [dependency-groups]
 dev = [

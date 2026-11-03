@@ -2,6 +2,11 @@
 
 ## 0.2.0 (2026-11-02)
 
+- Step-by-step setup guide at /docs on the dashboard site.
+- Action: new `install` input for the agent's own dependencies.
+- CLI: setup mistakes (bad tapedeck.yaml, missing key, wrong import path) print one
+  clear line instead of a traceback.
+
 - `tapedeck test --upload` sends results (never tapes) to the hosted dashboard
   (`TAPEDECK_TOKEN`, `TAPEDECK_URL`); the Action uploads automatically when
   `TAPEDECK_TOKEN` is set. Upload failures warn but never fail CI.
