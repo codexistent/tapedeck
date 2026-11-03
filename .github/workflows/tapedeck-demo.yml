@@ -21,5 +21,7 @@ jobs:
       - uses: ./
         env:
           TAPEDECK_BACKEND: scripted
+          # Optional: add a TAPEDECK_TOKEN repository secret to send results to the dashboard.
+          TAPEDECK_TOKEN: ${{ secrets.TAPEDECK_TOKEN }}
         with:
           config: examples/support_agent/tapedeck.yaml

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-11-02)
+
+- `tapedeck test --upload` sends results (never tapes) to the hosted dashboard
+  (`TAPEDECK_TOKEN`, `TAPEDECK_URL`); the Action uploads automatically when
+  `TAPEDECK_TOKEN` is set. Upload failures warn but never fail CI.
+- Hosted dashboard (dashboard/): GitHub sign-in, projects, API tokens, run history,
+  per-case trends, Stripe billing.
+
 ## 0.1.0 (2026-11-02)
 
 First working release.

@@ -61,14 +61,26 @@ export default async function Settings({
 
       <section className="card stack">
         <h2>Connect CI</h2>
-        <p className="muted small">Add the token and this URL to the Tapedeck step. Only results are uploaded; tapes stay in your repo.</p>
-        <pre className="code">{`- uses: codexistent/tapedeck@v0.1.0
-  env:
-    TAPEDECK_TOKEN: \${{ secrets.TAPEDECK_TOKEN }}
-    TAPEDECK_URL: ${API_URL}
-    HACKCLUB_API_KEY: \${{ secrets.HACKCLUB_API_KEY }}
-  with:
-    config: tapedeck.yaml`}</pre>
+        <p className="muted small">
+          Save the token as a repository secret named <code>TAPEDECK_TOKEN</code> (GitHub repo → Settings →
+          Secrets and variables → Actions). Your agent&apos;s own model key goes in as a secret too: replays run
+          your agent, so Tapedeck never needs a key of its own. Only results are uploaded; tapes stay in your repo.
+        </p>
+        <pre className="code">{`# .github/workflows/tapedeck.yml
+on: pull_request
+permissions: { contents: read, pull-requests: write }
+jobs:
+  tapedeck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: codexistent/tapedeck@v0.2.0
+        env:
+          TAPEDECK_TOKEN: \${{ secrets.TAPEDECK_TOKEN }}
+          TAPEDECK_URL: ${API_URL}
+          OPENAI_API_KEY: \${{ secrets.OPENAI_API_KEY }}  # your agent's model key
+        with:
+          config: tapedeck.yaml`}</pre>
         <p className="muted small">Or from a terminal: <code>TAPEDECK_TOKEN=tdk_… TAPEDECK_URL={API_URL} tapedeck test --upload</code></p>
       </section>
     </div>
