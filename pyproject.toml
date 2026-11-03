@@ -1,6 +1,6 @@
 [project]
 name = "tapedeck"
-version = "0.1.0"
+version = "0.2.0"
 description = "Regression tests for AI agents: record real runs, replay changed agents against the recorded world, and gate pull requests with statistics."
 readme = "README.md"
 license = "Apache-2.0"

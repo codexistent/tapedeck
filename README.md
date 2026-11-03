@@ -123,15 +123,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: codexistent/tapedeck@v0
+      - uses: codexistent/tapedeck@v0.2.0
         env:
-          HACKCLUB_API_KEY: ${{ secrets.HACKCLUB_API_KEY }}
+          # The key your agent already uses to call its model (OpenAI, Anthropic via
+          # an OpenAI-compatible endpoint, OpenRouter...). Name it whatever your
+          # tapedeck.yaml's api_key_env says.
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TAPEDECK_MODEL: ${{ vars.TAPEDECK_MODEL }}
+          # Optional: send results to the dashboard.
+          TAPEDECK_TOKEN: ${{ secrets.TAPEDECK_TOKEN }}
         with:
           config: tapedeck.yaml
 ```
 
-The action runs `tapedeck test`, posts one sticky PR comment (updated on each push), uploads the HTML report as an artifact, and fails the check on a regression. Commit the baseline from `main` after intended behavior changes (`tapedeck baseline`). Check your provider's rules before running live evals in CI: each run makes N × cases agent runs.
+Tapedeck itself never calls a model or pays for tokens: replays run your agent, on your agent's own model key. The action runs `tapedeck test`, posts one sticky PR comment (updated on each push), uploads the HTML report as an artifact, and fails the check on a regression. Commit the baseline from `main` after intended behavior changes (`tapedeck baseline`). Check your provider's rules before running live evals in CI: each run makes N × cases agent runs.
 
 ## Status and limitations
 

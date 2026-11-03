@@ -20,7 +20,7 @@ from .simulators import AppendLogSimulator, KeyValueSimulator, Simulator
 from .tape import LLMResponse, Tape, ToolCallRequest, Usage
 from .verify import CheckResult, Run, case, registry
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "AppendLogSimulator",
