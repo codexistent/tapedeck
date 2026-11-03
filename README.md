@@ -123,7 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: codexistent/tapedeck@v0
+      - uses: codexistent/tapedeck@v0.1.0
         env:
           HACKCLUB_API_KEY: ${{ secrets.HACKCLUB_API_KEY }}
           TAPEDECK_MODEL: ${{ vars.TAPEDECK_MODEL }}
